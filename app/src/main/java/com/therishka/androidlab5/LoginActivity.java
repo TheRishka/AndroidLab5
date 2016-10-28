@@ -3,25 +3,24 @@ package com.therishka.androidlab5;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
-public class LoginActivity extends AppCompatActivity implements AsyncCallback {
+public class LoginActivity extends AppCompatActivity implements AsyncCallback, OnClickListener {
 
     public static final String[] RANDOM_LOGIN = new String[]{
             "TheRishka", "HIBRO"
     };
+    public static final String[] ERROR_LOGIN = new String[]{"123123", "123123"};
 
     private UserLoginTask mAuthTask = null;
 
@@ -29,10 +28,13 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
     private EditText mPasswordInput;
     private View mProgressView;
     private Button mLoginButton;
+    private Button mHanderSuccessButton;
+    private Button mHandlerErrorButton;
 
     private View mPasswordContainer;
     private View mLoginContainer;
     private View mRootView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,21 +49,69 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
         mPasswordInput = (EditText) findViewById(R.id.password);
 
 
-        mLoginButton = (Button) findViewById(R.id.email_sign_in_button);
-        mLoginButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                doLogin();
-            }
-        });
+        mLoginButton = (Button) findViewById(R.id.sign_in_button);
+        mLoginButton.setOnClickListener(this);
+
+        mHanderSuccessButton = (Button) findViewById(R.id.start_handler_with_success);
+        mHanderSuccessButton.setOnClickListener(this);
+
+        mHandlerErrorButton = (Button) findViewById(R.id.start_handler_with_error);
+        mHandlerErrorButton.setOnClickListener(this);
 
         mProgressView = findViewById(R.id.login_progress);
     }
 
-    private void doLogin() {
-        if (mAuthTask != null) {
-            return;
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.sign_in_button:
+                doLogin();
+                break;
+            case R.id.start_handler_with_error:
+                startErrorHandler();
+                break;
+            case R.id.start_handler_with_success:
+                startValidHandler();
+                break;
         }
+    }
+
+    private void startErrorHandler() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(5000);
+                    resultError();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+    }
+
+    private void startValidHandler() {
+        Handler handler = new Handler();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                setProgress(true);
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                setProgress(false);
+                resultError();
+            }
+        });
+    }
+
+    private void doLogin() {
+//        if (mAuthTask != null) {
+//            return;
+//        }
         mLoginInput.setError(null);
         mPasswordInput.setError(null);
 
@@ -91,6 +141,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
             focusView.requestFocus();
         } else {
             mAuthTask = new UserLoginTask(email, password, this);
+            //noinspection ConfusingArgumentToVarargsMethod
             mAuthTask.execute((Void) null);
         }
     }
@@ -108,7 +159,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
 
     @Override
     public void resultError() {
-        mAuthTask = null;
+//        mAuthTask = null;
         Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake_anim);
         anim.reset();
         mLoginButton.clearAnimation();
@@ -117,8 +168,8 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
 
     @Override
     public void resultSuccess() {
-        mAuthTask = null;
-        Snackbar.make(mRootView, "SUCCESS LOGIN", Snackbar.LENGTH_SHORT).show();
+//        mAuthTask = null;
+        Snackbar.make(mRootView, "SUCCESS LOGIN", Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -144,5 +195,12 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
             }
         });
     }
+
+    private Runnable mLoginRunnable = new Runnable() {
+        @Override
+        public void run() {
+
+        }
+    };
 }
 
