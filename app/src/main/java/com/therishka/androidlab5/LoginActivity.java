@@ -45,16 +45,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback {
         mPasswordContainer = findViewById(R.id.password_container);
 
         mPasswordInput = (EditText) findViewById(R.id.password);
-        mPasswordInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    doLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
+
 
         mLoginButton = (Button) findViewById(R.id.email_sign_in_button);
         mLoginButton.setOnClickListener(new OnClickListener() {
