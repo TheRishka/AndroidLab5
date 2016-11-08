@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
@@ -58,6 +59,9 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback, O
         mHandlerErrorButton = (Button) findViewById(R.id.start_handler_with_error);
         mHandlerErrorButton.setOnClickListener(this);
 
+        Button cancelBtn = (Button) findViewById(R.id.cancel_button);
+        cancelBtn.setOnClickListener(this);
+
         mProgressView = findViewById(R.id.login_progress);
     }
 
@@ -73,6 +77,15 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback, O
             case R.id.start_handler_with_success:
                 startValidHandler();
                 break;
+            case R.id.cancel_button:
+                cancelTask();
+                break;
+        }
+    }
+
+    private void cancelTask() {
+        if (mAuthTask != null) {
+            mAuthTask.cancel(true);
         }
     }
 
@@ -132,7 +145,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback, O
             focusView = mLoginInput;
             cancel = true;
         } else if (!isEmailValid(email)) {
-            mLoginInput.setError(getString(R.string.error_invalid_email));
+            mLoginInput.setError(getString(R.string.error_invalid_login));
             focusView = mLoginInput;
             cancel = true;
         }
@@ -196,11 +209,8 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback, O
         });
     }
 
-    private Runnable mLoginRunnable = new Runnable() {
-        @Override
-        public void run() {
-
-        }
-    };
+    private void logMessage(String text) {
+        Log.d(this.getClass().getName(), text);
+    }
 }
 
