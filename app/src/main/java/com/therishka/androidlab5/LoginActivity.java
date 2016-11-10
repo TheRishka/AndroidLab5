@@ -2,6 +2,8 @@ package com.therishka.androidlab5;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -19,7 +21,7 @@ import android.widget.EditText;
 public class LoginActivity extends AppCompatActivity implements AsyncCallback, OnClickListener {
 
     public static final String[] RANDOM_LOGIN = new String[]{
-            "TheRishka", "HIBRO"
+            "TheRishka", "12345"
     };
     public static final String[] ERROR_LOGIN = new String[]{"123123", "123123"};
 
@@ -40,6 +42,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback, O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        logMessage("ON CREATE!");
         setContentView(R.layout.activity_login);
         mRootView = findViewById(R.id.root_view);
         mLoginInput = (EditText) findViewById(R.id.login);
@@ -63,6 +66,24 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback, O
         cancelBtn.setOnClickListener(this);
 
         mProgressView = findViewById(R.id.login_progress);
+    }
+
+    @Override
+    protected void onPause() {
+        logMessage("ON PAUSE!");
+        super.onPause();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        logMessage("ON CONFIGURATION CHANGED!");
+        super.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    protected void onResume() {
+        logMessage("ON RESUME!");
+        super.onResume();
     }
 
     @Override
@@ -183,6 +204,8 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback, O
     public void resultSuccess() {
 //        mAuthTask = null;
         Snackbar.make(mRootView, "SUCCESS LOGIN", Snackbar.LENGTH_LONG).show();
+        Intent intent = new Intent(this, UserInfoActivity.class);
+        startActivity(intent);
     }
 
     @Override
