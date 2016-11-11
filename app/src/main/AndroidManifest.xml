@@ -22,7 +22,9 @@
             android:name=".UserInfoActivity">
 
         </activity>
-        <activity android:name=".ChangeUserDataActivity">
+        <activity
+            android:name=".ChangeUserDataActivity"
+            android:configChanges="orientation|screenSize">
         </activity>
     </application>
 

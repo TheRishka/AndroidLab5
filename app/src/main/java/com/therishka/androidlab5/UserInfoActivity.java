@@ -1,6 +1,7 @@
 package com.therishka.androidlab5;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
@@ -39,7 +40,10 @@ public class UserInfoActivity extends ToolbarActivity {
         mUserAge = (TextView) findViewById(R.id.user_data_age);
         mUserSex = (TextView) findViewById(R.id.user_data_sex);
         if (savedInstanceState != null) {
+            logMessage("onCreate with savedInstanceState");
             restoreDataFromState(savedInstanceState);
+        } else {
+            logMessage("onCreate without savedInstanceState");
         }
     }
 
@@ -51,12 +55,37 @@ public class UserInfoActivity extends ToolbarActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        logMessage("onResume");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        logMessage("onPause");
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        logMessage("onSaveInstanceState");
         outState.putString(USER_NAME_KEY, mUserName.getText().toString());
         outState.putString(USER_SURNAME_KEY, mUserSurname.getText().toString());
         outState.putString(USER_AGE_KEY, mUserAge.getText().toString());
         outState.putString(USER_SEX_KEY, mUserSex.getText().toString());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        logMessage("onRestoreInstanceState");
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        logMessage("onConfigurationChanged");
+        super.onConfigurationChanged(newConfig);
     }
 
     public void changeUserDataBtnClick(View v) {
@@ -106,5 +135,9 @@ public class UserInfoActivity extends ToolbarActivity {
         } else {
             Log.d(this.getClass().getName(), "Not CHANGE_USER_DATA_REQUEST_CODE");
         }
+    }
+
+    private void logMessage(String text) {
+        Log.d(this.getClass().getName(), text.toUpperCase());
     }
 }

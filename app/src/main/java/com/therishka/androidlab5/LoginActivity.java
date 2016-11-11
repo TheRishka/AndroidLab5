@@ -2,13 +2,13 @@ package com.therishka.androidlab5;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +25,9 @@ public class LoginActivity extends ToolbarActivity implements AsyncCallback, OnC
     };
     public static final String[] ERROR_LOGIN = new String[]{"123123", "123123"};
 
+    public static final String PREFERENCES_NAME = "android_lab_prefs";
+    public static final String IS_LOGGED = "is_logged_in";
+
     private UserLoginTask mAuthTask = null;
 
     private EditText mLoginInput;
@@ -40,6 +43,10 @@ public class LoginActivity extends ToolbarActivity implements AsyncCallback, OnC
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (isLoggedInAlready()) {
+            startUserInfoActivity(false);
+//            finish();
+        }
         logMessage("ON CREATE!");
         setContentView(R.layout.activity_login);
         super.onCreate(savedInstanceState);
@@ -64,6 +71,11 @@ public class LoginActivity extends ToolbarActivity implements AsyncCallback, OnC
         cancelBtn.setOnClickListener(this);
 
         mProgressView = findViewById(R.id.login_progress);
+    }
+
+    private boolean isLoggedInAlready() {
+        SharedPreferences preferences = getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
+        return preferences.getBoolean(IS_LOGGED, false);
     }
 
     @Override
@@ -206,11 +218,21 @@ public class LoginActivity extends ToolbarActivity implements AsyncCallback, OnC
         mLoginButton.startAnimation(anim);
     }
 
+    @SuppressLint("CommitPrefEdits")
     @Override
     public void resultSuccess() {
+        SharedPreferences preferences = getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(IS_LOGGED, true);
+        editor.commit();
+        startUserInfoActivity(true);
+    }
+
+    private void startUserInfoActivity(boolean withAnim) {
         Intent intent = new Intent(this, UserInfoActivity.class);
         startActivity(intent);
-        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+        if (withAnim)
+            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
     }
 
     @Override

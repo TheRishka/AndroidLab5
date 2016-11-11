@@ -1,8 +1,10 @@
 package com.therishka.androidlab5;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -29,6 +31,41 @@ public class ChangeUserDataActivity extends ToolbarActivity implements RadioGrou
         userInputAge = (EditText) findViewById(R.id.user_age_input);
         RadioGroup userInputSexGroup = (RadioGroup) findViewById(R.id.user_sex_input);
         userInputSexGroup.setOnCheckedChangeListener(this);
+        if (savedInstanceState != null) {
+            logMessage("onCreate with savedState");
+        } else {
+            logMessage("onCreate without state");
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        logMessage("onResume");
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        logMessage("onPause");
+        super.onPause();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        logMessage("onConfigurationChanged");
+        super.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        logMessage("onSaveInstanceState");
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        logMessage("onRestoreInstanceState");
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
     @Override
@@ -79,6 +116,11 @@ public class ChangeUserDataActivity extends ToolbarActivity implements RadioGrou
 
     @Override
     protected void setupAdditionalToolbarSettings() {
+        // do nothing
+    }
 
+
+    private void logMessage(String text) {
+        Log.d(this.getClass().getName(), text.toUpperCase());
     }
 }
