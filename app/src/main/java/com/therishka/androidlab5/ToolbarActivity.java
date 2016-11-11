@@ -24,6 +24,7 @@ public abstract class ToolbarActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_toolbar_back);
             getSupportActionBar().setTitle(getTitleTextResId());
+            setupAdditionalToolbarSettings();
         }
     }
 
@@ -36,5 +37,7 @@ public abstract class ToolbarActivity extends AppCompatActivity {
     }
 
     @StringRes
-    public abstract int getTitleTextResId();
+    protected abstract int getTitleTextResId();
+
+    protected abstract void setupAdditionalToolbarSettings();
 }

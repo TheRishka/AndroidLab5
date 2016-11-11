@@ -4,19 +4,38 @@
     <!-- Strings related to login -->
     <string name="prompt_email">Login</string>
     <string name="prompt_password">Password</string>
+
     <string name="action_sign_in">Log in</string>
     <string name="action_cancel">Cancel</string>
     <string name="action_sign_in_short">Sign in</string>
+
     <string name="error_invalid_login">This login is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
+
     <string name="start_handler_with_error">Start Handler 1</string>
     <string name="start_handler_with_success">Start Handler 2</string>
     <string name="user_activity_title">О пользователе</string>
     <string name="user_data_change_activity_title">Изменить данные</string>
+
     <string name="user_name">Имя: </string>
     <string name="user_surname">Фамилия: </string>
     <string name="user_age">Возраст: </string>
     <string name="user_sex">Пол: </string>
+
+    <string name="user_name_input">Введите Имя</string>
+    <string name="user_surname_input">Введите Фамилия</string>
+    <string name="user_age_input">Введите Возраст</string>
+    <string name="user_sex_input">Выберите Пол</string>
+    <string name="user_male">М</string>
+    <string name="user_female">Ж</string>
+
+    <string name="user_male_full">Мужчина</string>
+    <string name="user_female_full">Женщина</string>
+
+    <string name="confirm">Подтвердить</string>
+    <string name="cancel">Отмена</string>
+
+    <string name="snackbar_action_canceled">Отмена действия!</string>
 </resources>
