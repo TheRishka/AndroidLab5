@@ -2,6 +2,7 @@ package com.therishka.androidlab5;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -37,6 +38,25 @@ public class UserInfoActivity extends ToolbarActivity {
         mUserSurname = (TextView) findViewById(R.id.user_data_surname);
         mUserAge = (TextView) findViewById(R.id.user_data_age);
         mUserSex = (TextView) findViewById(R.id.user_data_sex);
+        if (savedInstanceState != null) {
+            restoreDataFromState(savedInstanceState);
+        }
+    }
+
+    private void restoreDataFromState(@NonNull Bundle savedState) {
+        mUserName.setText(savedState.getString(USER_NAME_KEY, ""));
+        mUserSurname.setText(savedState.getString(USER_SURNAME_KEY, ""));
+        mUserAge.setText(savedState.getString(USER_AGE_KEY, ""));
+        mUserSex.setText(savedState.getString(USER_SEX_KEY, ""));
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(USER_NAME_KEY, mUserName.getText().toString());
+        outState.putString(USER_SURNAME_KEY, mUserSurname.getText().toString());
+        outState.putString(USER_AGE_KEY, mUserAge.getText().toString());
+        outState.putString(USER_SEX_KEY, mUserSex.getText().toString());
     }
 
     public void changeUserDataBtnClick(View v) {
@@ -47,6 +67,12 @@ public class UserInfoActivity extends ToolbarActivity {
         Intent intent = new Intent(this, ChangeUserDataActivity.class);
         startActivityForResult(intent, CHANGE_USER_DATA_REQUEST_CODE);
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_enter, R.anim.slide_exit);
     }
 
     @StringRes

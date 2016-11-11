@@ -18,7 +18,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class LoginActivity extends AppCompatActivity implements AsyncCallback, OnClickListener {
+public class LoginActivity extends ToolbarActivity implements AsyncCallback, OnClickListener {
 
     public static final String[] RANDOM_LOGIN = new String[]{
             "TheRishka", "12345"
@@ -36,15 +36,13 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback, O
 
     private View mPasswordContainer;
     private View mLoginContainer;
-    private View mRootView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         logMessage("ON CREATE!");
         setContentView(R.layout.activity_login);
-        mRootView = findViewById(R.id.root_view);
+        super.onCreate(savedInstanceState);
         mLoginInput = (EditText) findViewById(R.id.login);
 
         mLoginContainer = findViewById(R.id.login_container);
@@ -84,6 +82,18 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback, O
     protected void onResume() {
         logMessage("ON RESUME!");
         super.onResume();
+    }
+
+    @Override
+    protected int getTitleTextResId() {
+        return R.string.login_activity_title;
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    @Override
+    protected void setupAdditionalToolbarSettings() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setHomeAsUpIndicator(null);
     }
 
     @Override
@@ -143,9 +153,6 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback, O
     }
 
     private void doLogin() {
-//        if (mAuthTask != null) {
-//            return;
-//        }
         mLoginInput.setError(null);
         mPasswordInput.setError(null);
 
@@ -193,7 +200,6 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback, O
 
     @Override
     public void resultError() {
-//        mAuthTask = null;
         Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake_anim);
         anim.reset();
         mLoginButton.clearAnimation();
@@ -202,10 +208,9 @@ public class LoginActivity extends AppCompatActivity implements AsyncCallback, O
 
     @Override
     public void resultSuccess() {
-//        mAuthTask = null;
-        Snackbar.make(mRootView, "SUCCESS LOGIN", Snackbar.LENGTH_LONG).show();
         Intent intent = new Intent(this, UserInfoActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
     }
 
     @Override

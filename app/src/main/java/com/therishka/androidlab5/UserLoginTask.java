@@ -33,7 +33,7 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
         logMessage("doInBackground");
         try {
             // Simulate some heavy work.
-            Thread.sleep(5000);
+            Thread.sleep(2000);
             logMessage("doInBackground finish");
         } catch (InterruptedException e) {
             return false;
