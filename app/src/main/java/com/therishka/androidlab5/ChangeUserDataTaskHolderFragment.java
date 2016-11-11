@@ -65,10 +65,7 @@ public class ChangeUserDataTaskHolderFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        if (mAsyncTask != null) {
-            mAsyncTask.cancel(true);
-            mAsyncTask = null;
-        }
+        cancelTask();
     }
 
     private void logMessage(String text) {
