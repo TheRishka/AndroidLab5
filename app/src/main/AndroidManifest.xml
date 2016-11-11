@@ -12,17 +12,16 @@
             android:name=".LoginActivity"
             android:label="@string/app_name"
             android:windowSoftInputMode="stateHidden">
-
         </activity>
         <activity
-            android:name=".UserInfoActivity"
-            android:theme="@style/AppTheme.UserActivityDataHintTheme"
-            >
+            android:name=".UserInfoActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity android:name=".ChangeUserDataActivity">
         </activity>
     </application>
 
