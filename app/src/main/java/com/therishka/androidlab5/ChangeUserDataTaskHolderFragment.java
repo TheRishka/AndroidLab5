@@ -1,9 +1,11 @@
 package com.therishka.androidlab5;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 /**
@@ -18,6 +20,16 @@ public class ChangeUserDataTaskHolderFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        attachCallback(context);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        attachCallback(activity);
+    }
+
+    private void attachCallback(@NonNull Context context) {
         if (context instanceof AsyncCallback) {
             mAsyncCallback = (AsyncCallback) context;
         } else {
@@ -53,7 +65,10 @@ public class ChangeUserDataTaskHolderFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mAsyncCallback = null;
+        if (mAsyncTask != null) {
+            mAsyncTask.cancel(true);
+            mAsyncTask = null;
+        }
     }
 
     private void logMessage(String text) {
