@@ -10,4 +10,6 @@ public interface AsyncCallback {
     void resultSuccess();
 
     void taskCancelled();
+
+    void onProgressUpdate(int value);
 }

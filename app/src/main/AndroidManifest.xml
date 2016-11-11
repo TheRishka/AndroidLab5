@@ -23,8 +23,7 @@
 
         </activity>
         <activity
-            android:name=".ChangeUserDataActivity"
-            android:configChanges="orientation|screenSize">
+            android:name=".ChangeUserDataActivity">
         </activity>
     </application>
 

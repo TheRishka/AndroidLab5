@@ -77,7 +77,9 @@
             style="?android:buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:animateLayoutChanges="true"
+            android:orientation="horizontal"
+            android:padding="12dp">
 
             <Button
                 style="?android:buttonBarStyle"
@@ -95,6 +97,16 @@
                 android:onClick="confirmBtnPressed"
                 android:text="@string/confirm"/>
         </LinearLayout>
+
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="false"
+            android:visibility="gone"/>
+
 
     </LinearLayout>
 

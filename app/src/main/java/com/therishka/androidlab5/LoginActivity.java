@@ -109,6 +109,11 @@ public class LoginActivity extends ToolbarActivity implements AsyncCallback, OnC
     }
 
     @Override
+    public void onProgressUpdate(int value) {
+
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.sign_in_button:

@@ -1,5 +1,6 @@
 package com.therishka.androidlab5;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -7,12 +8,15 @@ import android.support.annotation.StringRes;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 
-public class ChangeUserDataActivity extends ToolbarActivity implements RadioGroup.OnCheckedChangeListener {
+public class ChangeUserDataActivity extends ToolbarActivity implements RadioGroup.OnCheckedChangeListener, AsyncCallback {
 
     public static final int RESULT_CANCEL = 101;
     public static final int RESULT_CHANGED = 102;
+
+    public static final String PROGRESS_VALUE_KEY = "progress_value";
 
     @StringRes
     private int USER_SEX_STRING_TEXT = R.string.user_male_full;
@@ -20,6 +24,7 @@ public class ChangeUserDataActivity extends ToolbarActivity implements RadioGrou
     private EditText userInputName;
     private EditText userInputSurname;
     private EditText userInputAge;
+    private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,13 +34,60 @@ public class ChangeUserDataActivity extends ToolbarActivity implements RadioGrou
         userInputName = (EditText) findViewById(R.id.user_name_input);
         userInputSurname = (EditText) findViewById(R.id.user_surname_input);
         userInputAge = (EditText) findViewById(R.id.user_age_input);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         RadioGroup userInputSexGroup = (RadioGroup) findViewById(R.id.user_sex_input);
         userInputSexGroup.setOnCheckedChangeListener(this);
         if (savedInstanceState != null) {
             logMessage("onCreate with savedState");
+            mProgressBar.setProgress(savedInstanceState.getInt(PROGRESS_VALUE_KEY));
+            if(getTaskHolderFragment().isTaskActive()){
+                mProgressBar.setVisibility(View.VISIBLE);
+            }
         } else {
             logMessage("onCreate without state");
         }
+    }
+
+    private ChangeUserDataTaskHolderFragment getTaskHolderFragment() {
+        FragmentManager fragmentManager = getFragmentManager();
+        ChangeUserDataTaskHolderFragment fragment =
+                (ChangeUserDataTaskHolderFragment) fragmentManager.
+                        findFragmentByTag(ChangeUserDataTaskHolderFragment.class.getName());
+
+        if (fragment == null) {
+            fragment = new ChangeUserDataTaskHolderFragment();
+            fragmentManager.
+                    beginTransaction().
+                    add(fragment, ChangeUserDataTaskHolderFragment.class.getName()).
+                    commit();
+        }
+        return fragment;
+    }
+
+    @Override
+    public void setProgress(boolean show) {
+        mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void resultError() {
+        setProgress(false);
+    }
+
+    @Override
+    public void resultSuccess() {
+        setProgress(false);
+        closeThisActivity(true);
+    }
+
+    @Override
+    public void taskCancelled() {
+        setProgress(false);
+    }
+
+    @Override
+    public void onProgressUpdate(int value) {
+        mProgressBar.setProgress(value);
     }
 
     @Override
@@ -59,6 +111,7 @@ public class ChangeUserDataActivity extends ToolbarActivity implements RadioGrou
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         logMessage("onSaveInstanceState");
+        outState.putInt(PROGRESS_VALUE_KEY, mProgressBar.getProgress());
         super.onSaveInstanceState(outState);
     }
 
@@ -86,10 +139,15 @@ public class ChangeUserDataActivity extends ToolbarActivity implements RadioGrou
     }
 
     public void confirmBtnPressed(View v) {
-        closeThisActivity(true);
+        mProgressBar.setVisibility(View.VISIBLE);
+        getTaskHolderFragment().startTask();
+//        closeThisActivity(true);
     }
 
     public void cancelBtnPressed(View v) {
+        if (getTaskHolderFragment().isTaskActive()) {
+            getTaskHolderFragment().cancelTask();
+        }
         closeThisActivity(false);
     }
 
