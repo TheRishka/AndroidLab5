@@ -99,25 +99,6 @@ public class UserInfoActivity extends ToolbarActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.slide_enter, R.anim.slide_exit);
-    }
-
-    @StringRes
-    @Override
-    public int getTitleTextResId() {
-        return R.string.user_activity_title;
-    }
-
-    @SuppressWarnings("ConstantConditions")
-    @Override
-    protected void setupAdditionalToolbarSettings() {
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setHomeAsUpIndicator(null);
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CHANGE_USER_DATA_REQUEST_CODE) {
@@ -135,6 +116,25 @@ public class UserInfoActivity extends ToolbarActivity {
         } else {
             Log.d(this.getClass().getName(), "Not CHANGE_USER_DATA_REQUEST_CODE");
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_enter, R.anim.slide_exit);
+    }
+
+    @StringRes
+    @Override
+    public int getTitleTextResId() {
+        return R.string.user_activity_title;
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    @Override
+    protected void setupAdditionalToolbarSettings() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setHomeAsUpIndicator(null);
     }
 
     private void logMessage(String text) {

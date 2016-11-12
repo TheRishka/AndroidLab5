@@ -65,7 +65,7 @@ public class ChangeUserDataTaskHolderFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        cancelTask();
+        mAsyncCallback = null;
     }
 
     private void logMessage(String text) {
@@ -89,7 +89,7 @@ public class ChangeUserDataTaskHolderFragment extends Fragment {
                 while (randomProgress < 100 && !isCancelled()) {
                     randomProgress += 5;
                     publishProgress(randomProgress);
-                    Thread.sleep(200);
+                    Thread.sleep(300);
                 }
             } catch (InterruptedException e) {
                 return null;
